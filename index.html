@@ -33,7 +33,7 @@ function calculateLength() {
 	if (ow && w>=lw) {localStorage.wl++;} else if (!ow && lw>=w && localStorage.wl>0) {localStorage.wl--;}			
 	localStorage[d.getDay().toString()]=w;
 	document.getElementById("cweight").style.display="none";
-	document.getElementById("msg").innerHTML="Your exercise for today is to strain all your muscles at once for "+localStorage.wl+" seconds.<br>In order to keep it doable, strain while you exhale, rest while you inhale. Both inhaling and exhaling are done through the nose and lasts 5 seconds each.";
+	document.getElementById("msg").innerHTML="Today's exercise is to strain all your muscles at once for "+localStorage.wl+" seconds.<br>In order to keep it doable, strain while you exhale, rest while you inhale. Both inhaling and exhaling are done through the nose and lasts 5 seconds each.";
 	document.getElementById("stbt").style.display="inline";
 }
 			
