@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="title">Weight Loss Trainer</title>
+    <style> * {font-size: xx-large; text-align: center;}</style>
+  </head>
+  <body>
+	<p id="overweight">Are you overweight? <button id="yes" onclick="overweight(true)">Yes</button><button id="no" onclick="overweight(false)">No</button></p>
+	<div id="cweight" style="display:none"><p>Last week, your weight was <span id="data"></span></p>
+	<p<label for="weight">How much do you weigh today?</label><input type="number" step="0.1" id="weight"><button onclick="calculateLength()">Honestly</button></p></div>	
+	<p id="msg">Judge by the mirror, not the scale, because of muscle mass.</p>
+	<p id="bar" style="width:0%"></p>
+	<button id="stbt" style="display:none" onclick="start()">Start</button>	
+	<script>
+	var ow,w,d,lw,data,st,rw,t,e;
+
+function overweight(r) {
+	ow=r;//OverWeight?
+	d=new Date();//Date object	
+	lw=localStorage[d.getDay().toString()];//Last Week's weight
+	document.getElementById("data").innerHTML=lw;
+	document.getElementById("overweight").style.display="none";
+	document.getElementById("cweight").style.display="block";
+	document.getElementById("msg").innerHTML="The workout length is adjusted slightly according to the changes in your weight.<br>The weight is compared to last week because weight fluctuates daily.";	
+}
+
+function calculateLength() {	
+	if (localStorage.wl==undefined) {localStorage.wl=0;}//Workout Length
+	if (lw==undefined){lw=0;}
+	w=document.getElementById("weight").value;//current Weight	
+	if (ow && w>=lw) {localStorage.wl++;} else if (!ow && lw>=w && localStorage.wl>0) {localStorage.wl--;}			
+	localStorage[d.getDay().toString()]=w;
+	document.getElementById("cweight").style.display="none";
+	document.getElementById("msg").innerHTML="Your exercise for today is to strain all your muscles at once for "+localStorage.wl+" seconds.<br>In order to keep it doable, strain while you exhale, rest while you inhale. Both inhaling and exhaling are done through the nose and lasts 5 seconds each.";
+	document.getElementById("stbt").style.display="inline";
+}
+			
+function start() {
+	document.getElementById("stbt").style.display="none";
+	if (localStorage.wl>0) {
+		rw=Number(localStorage.wl);//Remaining Workout time
+		inhale();
+		t=setInterval(timer,10);
+	} else {
+		document.getElementById("msg").innerHTML="You don't need to exercise";
+	}	
+}
+
+function inhale(){	
+	document.getElementById("msg").innerHTML="Inhale & relax";
+	document.getElementById("bar").style.background="#4CAF50";
+	st=Date.now();
+	setTimeout(exhale,5000);
+}
+
+function exhale(){
+	document.getElementById("msg").innerHTML="Exhale & strain";
+	document.getElementById("bar").style.background="#FF6347";
+	st=Date.now();
+	e=setTimeout(function(){
+		rw-=5;
+		inhale();},5000);
+}
+
+function timer(){	
+	if (document.getElementById("msg").innerHTML.includes("Inhale")) {
+		document.getElementById("bar").style.width=(Date.now()-st)/50+"%";
+		document.getElementById("bar").innerHTML=5-Math.trunc((Date.now()-st)/1000);		
+	} else {		
+		document.getElementById("bar").style.width=100-((Date.now()-st)/Math.min(50,rw*10))+"%";
+		document.getElementById("bar").innerHTML=rw-Math.trunc((Date.now()-st)/1000);
+		if (Date.now()-st>rw*1000) {
+			clearInterval(t);
+			clearTimeout(e);
+			document.getElementById("msg").innerHTML="Well done, come back tomorrow.<br>Meanwhile you can eat as usual, just have in mind that the body gets his energy from food, and stores most of it as fat for later use. So unnecessary food will have to get out through exercise.";
+			document.getElementById("bar").style.display="none";
+			localStorage.ps=st;
+		}
+	}
+}
+	</script>
+  </body>
+</html>
