@@ -31,7 +31,7 @@ function calculateLength() {
 	if (lw==undefined){lw=0;}
 	dsps=Math.round(Date.now()-localStorage.ps);//Days Since Previous Session
 	if (dsps>1){localStorage.wl-=dsps;}
-	if (localStorage.wl<0){localStorage.wl=0);
+	if (localStorage.wl<0){localStorage.wl=0;}
 	w=document.getElementById("weight").value;//current Weight	
 	if (ow && w>=lw) {localStorage.wl++;} else if (!ow && lw>=w && localStorage.wl>0) {localStorage.wl--;}			
 	localStorage[d.getDay().toString()]=w;
