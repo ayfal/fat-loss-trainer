@@ -29,7 +29,7 @@ function overweight(r) {
 function calculateLength() {	
 	if (localStorage.wl==undefined) {localStorage.wl=0;}//Workout Length
 	if (lw==undefined){lw=0;}
-	dsps=Math.round(Date.now()-localStorage.ps);//Days Since Previous Session
+	dsps=Math.round((Date.now()-localStorage.ps)/(1000*60*60*24));//Days Since Previous Session
 	if (dsps>1){localStorage.wl-=dsps;}
 	if (localStorage.wl<0){localStorage.wl=0;}
 	w=document.getElementById("weight").value;//current Weight	
