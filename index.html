@@ -64,7 +64,15 @@ function exhale(){
 	st=Date.now();
 	e=setTimeout(function(){
 		rw-=5;
-		inhale();},5000);
+		if (rw>0) {
+			inhale();
+		} else{			
+			clearInterval(t);
+			document.getElementById("msg").innerHTML="Well done, come back tomorrow.<br>Meanwhile you can eat as usual, just have in mind that the body gets his energy from food, and stores most of it as fat for later use. So unnecessary food will have to get out through exercise.";
+			document.getElementById("bar").style.display="none";
+			localStorage.ps=st;
+		}
+	},Math.min(rw,5)*1000);
 }
 
 function timer(){	
@@ -74,13 +82,6 @@ function timer(){
 	} else {		
 		document.getElementById("bar").style.width=100-((Date.now()-st)/Math.min(50,rw*10))+"%";
 		document.getElementById("bar").innerHTML=rw-Math.trunc((Date.now()-st)/1000);
-		if (Date.now()-st>rw*1000) {
-			clearInterval(t);
-			clearTimeout(e);
-			document.getElementById("msg").innerHTML="Well done, come back tomorrow.<br>Meanwhile you can eat as usual, just have in mind that the body gets his energy from food, and stores most of it as fat for later use. So unnecessary food will have to get out through exercise.";
-			document.getElementById("bar").style.display="none";
-			localStorage.ps=st;
-		}
 	}
 }
 	</script>
