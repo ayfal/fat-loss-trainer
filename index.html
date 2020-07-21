@@ -30,31 +30,31 @@ function calculateLength() {
 	if (localStorage.wl==undefined) {localStorage.wl=0;}//Workout Length
 	if (lw==undefined){lw=0;}
 	dsps=Math.round((Date.now()-localStorage.ps)/(1000*60*60*24));//Days Since Previous Session
-	if (dsps>1){localStorage.wl-=dsps;}
+	if (dsps>1){localStorage.wl-=(dsps-1);}
 	if (localStorage.wl<0){localStorage.wl=0;}
 	w=document.getElementById("weight").value;//current Weight	
-	if (ow && w>=lw) {localStorage.wl++;} else if (!ow && lw>=w && localStorage.wl>0) {localStorage.wl--;}			
+	if (ow && w>=lw) {localStorage.wl++;} else if (!ow && lw>=w) {localStorage.wl--;}			
 	localStorage[d.getDay().toString()]=w;
 	document.getElementById("cweight").style.display="none";
-	document.getElementById("msg").innerHTML="Today's exercise is to strain all your muscles at once for "+localStorage.wl+" seconds.<br>In order to keep it doable, strain while you exhale, rest while you inhale. Both inhaling and exhaling are done through the nose and lasts 5 seconds each.";
-	document.getElementById("stbt").style.display="inline";
+	if (localStorage.wl>0) {
+		document.getElementById("msg").innerHTML="Today's exercise is to strain all your muscles at once for "+localStorage.wl+" seconds.<br>In order to keep it doable, strain while you exhale, rest while you inhale. Both inhaling and exhaling are done through the nose and lasts 5 seconds each.";
+		document.getElementById("stbt").style.display="inline";
+	} else {
+		document.getElementById("msg").innerHTML="You don't need to exercise today.";
+	}	
 }
 			
 function start() {
 	document.getElementById("stbt").style.display="none";
-	if (localStorage.wl>0) {
-		rw=Number(localStorage.wl);//Remaining Workout time
-		inhale();
-		t=setInterval(timer,10);
-	} else {
-		document.getElementById("msg").innerHTML="You don't need to exercise";
-	}	
+	rw=Number(localStorage.wl);//Remaining Workout time
+	inhale();
+	t=setInterval(timer,10);	
 }
 
 function inhale(){	
 	document.getElementById("msg").innerHTML="Inhale & relax";
 	document.getElementById("bar").style.background="#4CAF50";
-	st=Date.now();
+	st=Date.now();//Start Time
 	setTimeout(exhale,5000);
 }
 
@@ -62,7 +62,7 @@ function exhale(){
 	document.getElementById("msg").innerHTML="Exhale & strain";
 	document.getElementById("bar").style.background="#FF6347";
 	st=Date.now();
-	e=setTimeout(function(){
+	setTimeout(function(){
 		rw-=5;
 		if (rw>0) {
 			inhale();
