@@ -8,15 +8,23 @@
   </head>
   <body>
 	<div id="msg">
-	  <p>The body gets his energy from food, and stores most of it as fat for later use.<br>
-	  Exercise uses energy, and also builds muscles which use much more energy even while resting.<br>
-	  This site will help you lose fat by doing a simple and short exercise, and slightly changing your nutrition.</p>
-	  <p>In order to adjust the workout length, there are two things we need to know:<br>
-	  1) The weekly change in your weight (because weight fluctuates daily):<br>
-	  last week you weight was <span id="previousWeight"></span><br>
-	  <label for="weight">How much do you weigh today?</label><input type="number" step="0.1" id="weight required"><br>
-	  2) Are you still over-energized (fat)? Judge by your looks, not your weight, because of muscle mass.<button id="yes" onclick="calculateLength(true)">Yes</button><button id="no" onclick="calculateLength(false)">No</button></p>
-	</div>
+    <p>
+      The body gets his energy from food, and stores most of it as fat for later use.<br>
+      Exercise uses energy, and also builds muscles which use much more energy even while resting.<br>
+      This site will help you lose fat by doing a simple and short exercise, and slightly changing your nutrition.
+    </p>
+    <p>
+      In order to adjust the workout length, there are two things we need to know:<br>
+      1) The weekly change in your weight (because weight fluctuates daily):<br>
+      Last week you weight was <span id="previousWeight"></span><br>
+      <form>
+        <label for="weight">How much do you weigh today?</label>
+        <input type="number" step="0.1" id="weight" required><br>
+        2) Are you still over-energized (fat)? Judge by your looks, not your weight, because of muscle mass.
+        <button id="yes" onclick="calculateLength(true)">Yes</button><button id="no" onclick="calculateLength(false)">No</button>
+      </form>
+    </p>
+  </div>
 	<button id="stbt" style="display:none" onclick="start()">Start</button>
 	<p id="bar" style="width:0%"></p>
 	<script>
