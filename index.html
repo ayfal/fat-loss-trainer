@@ -39,7 +39,7 @@
 	if (f && w>=pw) {localStorage.wl++;} else if (!f && pw>=w) {localStorage.wl--;}			
 	localStorage[d.getDay().toString()]=w;
 	if (localStorage.wl>0) {
-		document.getElementById("msg").innerHTML="Today's exercise is to strain all your muscles at once for "+localStorage.wl+" seconds.<br>Using fat for energy takes oxygen and time (among other things), so strain while you exhale, and rest while you inhale. Both inhaling and exhaling are done through the nose and lasts 5 seconds each.";
+		document.getElementById("msg").innerHTML="Today's exercise is to strain all your muscles at once for "+localStorage.wl+" seconds.<br>Using fat for energy takes oxygen (among other things), so strain while you exhale, and rest while you inhale. Both inhaling and exhaling are done through the nose and lasts 3 seconds each.";
 		document.getElementById("stbt").style.display="inline";
 	} else {
 		document.getElementById("msg").innerHTML="You don't need to exercise today.";
@@ -57,7 +57,7 @@ function inhale(){
 	document.getElementById("msg").innerHTML="Inhale & relax";
 	document.getElementById("bar").style.background="#4CAF50";
 	st/*Start Time*/=Date.now();
-	setTimeout(exhale,5000);
+	setTimeout(exhale,3000);
 }
 
 function exhale(){
@@ -65,7 +65,7 @@ function exhale(){
 	document.getElementById("bar").style.background="#FF6347";
 	st=Date.now();
 	setTimeout(function(){
-		rt-=5;
+		rt-=3;
 		if (rt>0) {
 			inhale();
 		} else{			
@@ -74,15 +74,15 @@ function exhale(){
 			document.getElementById("bar").style.display="none";
 			localStorage.ps=st;
 		}
-	},Math.min(rt,5)*1000);
+	},Math.min(rt,3)*1000);
 }
 
 function timer(){	
 	if (document.getElementById("msg").innerHTML.includes("Inhale")) {
-		document.getElementById("bar").style.width=(Date.now()-st)/50+"%";
-		document.getElementById("bar").innerHTML=5-Math.trunc((Date.now()-st)/1000);		
+		document.getElementById("bar").style.width=(Date.now()-st)/30+"%";
+		document.getElementById("bar").innerHTML=3-Math.trunc((Date.now()-st)/1000);		
 	} else {		
-		document.getElementById("bar").style.width=100-((Date.now()-st)/Math.min(50,rt*10))+"%";
+		document.getElementById("bar").style.width=100-((Date.now()-st)/Math.min(30,rt*10))+"%";
 		document.getElementById("bar").innerHTML=rt-Math.trunc((Date.now()-st)/1000);
 	}
 }
