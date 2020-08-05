@@ -37,22 +37,24 @@
 	}
 	
   function calculateLength(isFat) {
-    f=isFat;  	
-	if (localStorage.wl/*Workout Length*/==undefined) {localStorage.wl=0;}
-	if (pw==undefined){pw=0;}
-	dsps/*Days Since Previous Session*/=Math.round((Date.now()-localStorage.ps/*Previous Session*/)/(1000*60*60*24));
-	if (dsps>1){localStorage.wl-=(dsps-1);}
-	if (localStorage.wl<0){localStorage.wl=0;}
-	w=document.getElementById("weight").value;
-	if (f && w>=pw) {localStorage.wl++;} else if (!f && pw>=w) {localStorage.wl--;}			
-	localStorage[d.getDay().toString()]=w;
-	if (localStorage.wl>0) {
-		document.getElementById("msg").innerHTML="Today's exercise is to strain all your muscles at once for "+localStorage.wl+" seconds.<br>Using fat for energy takes oxygen (among other things), so strain while you exhale, and rest while you inhale. Both inhaling and exhaling are done through the nose and lasts 3 seconds each.";
+    f=isFat;
+    w=document.getElementById("weight").value;
+    if (w!==""){
+      if (localStorage.wl/*Workout Length*/==undefined) {localStorage.wl=0;}
+      if (pw==undefined){pw=0;}
+      dsps/*Days Since Previous Session*/=Math.round((Date.now()-localStorage.ps/*Previous Session*/)/(1000*60*60*24));
+      if (dsps>1){localStorage.wl-=(dsps-1);}
+      if (localStorage.wl<0){localStorage.wl=0;}
+      if (f && w>=pw) {localStorage.wl++;} else if (!f && pw>=w) {localStorage.wl--;}			
+      localStorage[d.getDay().toString()]=w;
+      if (localStorage.wl>0) {
+        document.getElementById("msg").innerHTML="Today's exercise is to strain all your muscles at once for "+localStorage.wl+" seconds.<br>Using fat for energy takes oxygen (among other things), so strain while you exhale, and rest while you inhale. Both inhaling and exhaling are done through the nose and lasts 3 seconds each.";
 		document.getElementById("stbt").style.display="inline";
-	} else {
-		document.getElementById("msg").innerHTML="You don't need to exercise today.";
-	}	
-}
+      } else {
+        document.getElementById("msg").innerHTML="You don't need to exercise today.";
+      }	
+    }
+  }
 			
 function start() {
 	document.getElementById("stbt").style.display="none";
