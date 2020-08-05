@@ -3,41 +3,43 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="title">Weight Loss Trainer</title>
+    <title id="title">Fat Loss Trainer</title>
     <style> * {font-size: xx-large; text-align: center;}</style>
   </head>
   <body>
-	<p id="overweight">The body gets his energy from food, and stores most of it as fat for later use.<br>Exercise uses energy, and also builds muscles which use a lot more energy even while resting.<br><This site will help you lose fat with a simple and short exercise.<br><br>Are you fat? <button id="yes" onclick="overweight(true)">Yes</button><button id="no" onclick="overweight(false)">No</button></p>
-	<div id="cweight" style="display:none"><p>Last week, your weight was <span id="data"></span></p>
-	<p><label for="weight">How much do you weigh today?</label><input type="number" step="0.1" id="weight"><button onclick="calculateLength()">Honestly</button></p></div>	
-	<p id="msg">Judge by the mirror, not the scale, because of muscle mass.</p>
+	<div id="msg">
+	  <p>The body gets his energy from food, and stores most of it as fat for later use.<br>
+	  Exercise uses energy, and also builds muscles which use much more energy even while resting.<br>
+	  This site will help you lose fat by doing a simple and short exercise, and slightly changing your nutrition.</p>
+	  <p>In order to adjust the workout length, there are two things we need to know:<br>
+	  1) The weekly change in your weight (because weight fluctuates daily):<br>
+	  last week you weight was <span id="previousWeight"></span><br>
+	  <label for="weight">How much do you weigh today?</label><input type="number" step="0.1" id="weight"><br>
+	  2) Are you still fat? Judge by your looks, not your weight, because of muscle mass.<button id="yes" onclick="calculateLength(true)">Yes</button><button id="no" onclick="calculateLength(false)">No</button></p>
+	</div>
+	<button id="stbt" style="display:none" onclick="start()">Start</button>
 	<p id="bar" style="width:0%"></p>
-	<button id="stbt" style="display:none" onclick="start()">Start</button>	
 	<script>
-	var ow,w,d,lw,data,st,rw,t,e;
-
-function overweight(r) {
-	ow=r;//OverWeight?
-	d=new Date();//Date object	
-	lw=localStorage[d.getDay().toString()];//Last Week's weight
-	document.getElementById("data").innerHTML=lw;
-	document.getElementById("overweight").style.display="none";
-	document.getElementById("cweight").style.display="block";
-	document.getElementById("msg").innerHTML="The workout length is adjusted slightly according to weekly changes in your weight, because weight fluctuates daily.";	
-}
-
-function calculateLength() {	
-	if (localStorage.wl==undefined) {localStorage.wl=0;}//Workout Length
-	if (lw==undefined){lw=0;}
-	dsps=Math.round((Date.now()-localStorage.ps)/(1000*60*60*24));//Days Since Previous Session
+	var d,pw,st,rt,t,e;
+	
+	window.onload=function(){
+		d=new Date();
+		pw/*Previous Weight*/=localStorage[d.getDay().toString()];
+		document.getElementById("previousWeight").innerHTML=pw;
+	}
+	
+  function calculateLength(isFat) {
+    f=isFat;  	
+	if (localStorage.wl/*Workout Length*/==undefined) {localStorage.wl=0;}
+	if (pw==undefined){pw=0;}
+	dsps/*Days Since Previous Session*/=Math.round((Date.now()-localStorage.ps/*Previous Session*/)/(1000*60*60*24));
 	if (dsps>1){localStorage.wl-=(dsps-1);}
 	if (localStorage.wl<0){localStorage.wl=0;}
-	w=document.getElementById("weight").value;//current Weight	
-	if (ow && w>=lw) {localStorage.wl++;} else if (!ow && lw>=w) {localStorage.wl--;}			
+	w=document.getElementById("weight").value;
+	if (f && w>=pw) {localStorage.wl++;} else if (!f && pw>=w) {localStorage.wl--;}			
 	localStorage[d.getDay().toString()]=w;
-	document.getElementById("cweight").style.display="none";
 	if (localStorage.wl>0) {
-		document.getElementById("msg").innerHTML="Today's exercise is to strain all your muscles at once for "+localStorage.wl+" seconds.<br>Using fat for energy takes oxygen and time, so strain while you exhale, and rest while you inhale. Both inhaling and exhaling are done through the nose and lasts 5 seconds each.";
+		document.getElementById("msg").innerHTML="Today's exercise is to strain all your muscles at once for "+localStorage.wl+" seconds.<br>Using fat for energy takes oxygen and time (among other things), so strain while you exhale, and rest while you inhale. Both inhaling and exhaling are done through the nose and lasts 5 seconds each.";
 		document.getElementById("stbt").style.display="inline";
 	} else {
 		document.getElementById("msg").innerHTML="You don't need to exercise today.";
@@ -46,7 +48,7 @@ function calculateLength() {
 			
 function start() {
 	document.getElementById("stbt").style.display="none";
-	rw=Number(localStorage.wl);//Remaining Workout time
+	rt/*Remaining Time*/=Number(localStorage.wl);
 	inhale();
 	t=setInterval(timer,10);	
 }
@@ -54,7 +56,7 @@ function start() {
 function inhale(){	
 	document.getElementById("msg").innerHTML="Inhale & relax";
 	document.getElementById("bar").style.background="#4CAF50";
-	st=Date.now();//Start Time
+	st/*Start Time*/=Date.now();
 	setTimeout(exhale,5000);
 }
 
@@ -63,8 +65,8 @@ function exhale(){
 	document.getElementById("bar").style.background="#FF6347";
 	st=Date.now();
 	setTimeout(function(){
-		rw-=5;
-		if (rw>0) {
+		rt-=5;
+		if (rt>0) {
 			inhale();
 		} else{			
 			clearInterval(t);
@@ -72,7 +74,7 @@ function exhale(){
 			document.getElementById("bar").style.display="none";
 			localStorage.ps=st;
 		}
-	},Math.min(rw,5)*1000);
+	},Math.min(rt,5)*1000);
 }
 
 function timer(){	
@@ -80,8 +82,8 @@ function timer(){
 		document.getElementById("bar").style.width=(Date.now()-st)/50+"%";
 		document.getElementById("bar").innerHTML=5-Math.trunc((Date.now()-st)/1000);		
 	} else {		
-		document.getElementById("bar").style.width=100-((Date.now()-st)/Math.min(50,rw*10))+"%";
-		document.getElementById("bar").innerHTML=rw-Math.trunc((Date.now()-st)/1000);
+		document.getElementById("bar").style.width=100-((Date.now()-st)/Math.min(50,rt*10))+"%";
+		document.getElementById("bar").innerHTML=rt-Math.trunc((Date.now()-st)/1000);
 	}
 }
 	</script>
