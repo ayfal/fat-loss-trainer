@@ -1,2 +1,2 @@
-# weight-loss-trainer
-Helps lose weight through daily exercise
+# fat-loss-trainer
+Helps lose fat through daily exercise
