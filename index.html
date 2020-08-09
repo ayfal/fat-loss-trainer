@@ -46,7 +46,7 @@
       if (f && w>=pw) {localStorage.wl++;} else if (!f && pw>=w) {localStorage.wl--;}			
       localStorage[d.getDay().toString()]=w;
       if (localStorage.wl>0) {
-        document.getElementById("msg").innerHTML="Today's exercise is to strain all your muscles at once for "+localStorage.wl+" seconds.<br>Using fat for energy takes oxygen (among other things), and muscles need rest, so strain while you exhale, and rest while you inhale. Both inhaling and exhaling are done through the nose and lasts 3 seconds each.";
+        document.getElementById("msg").innerHTML="Today's exercise is to strain all your muscles at once for "+localStorage.wl+" seconds.<br>Using fat for energy takes oxygen (among other things), and muscles need rest, so rest while you inhale, and strain while you exhale. Both inhaling and exhaling are done through the nose and lasts 3 seconds each.";
 		document.getElementById("stbt").style.display="inline";
       } else {
         document.getElementById("msg").innerHTML="You don't need to exercise today.";
