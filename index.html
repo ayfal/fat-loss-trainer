@@ -46,7 +46,7 @@
       if (f && w>=pw) {localStorage.wl++;} else if (!f && pw>=w) {localStorage.wl--;}			
       localStorage[d.getDay().toString()]=w;
       if (localStorage.wl>0) {
-        document.getElementById("msg").innerHTML="Today's exercise is to strain all your muscles at once for "+localStorage.wl+" seconds.<br>Using fat for energy takes oxygen (among other things), and muscles need rest, so rest while you inhale, and strain while you exhale. Both inhaling and exhaling are done through the nose and lasts 3 seconds each.";
+        document.getElementById("msg").innerHTML="Today's exercise is to strain all your muscles at once for "+localStorage.wl+" seconds.<br>Using fat for energy takes oxygen (among other things), and muscles need rest to work longer, so rest while you inhale, and strain while you exhale. Both inhaling and exhaling are done through the nose and lasts 3 seconds each.";
 		document.getElementById("stbt").style.display="inline";
       } else {
         document.getElementById("msg").innerHTML="You don't need to exercise today.";
@@ -78,7 +78,7 @@ function exhale(){
 			inhale();
 		} else{			
 			clearInterval(t);
-			document.getElementById("msg").innerHTML="Well done, come back tomorrow.<p>Using fat for energy also takes water, so if your urine is yellow drink water.<br>Otherwise you can eat as usual, just have in mind that unnecessary food will have to get out through exercise.</p>";
+			document.getElementById("msg").innerHTML="Well done, come back tomorrow.<p>Using fat for energy also takes water, so if your urine is yellow drink water.<br>It also suppresses apetite, so apart from that you can eat as usual, though unnecessary food will have to get out by more exercise.</p>"; 
 			document.getElementById("bar").style.display="none";
 			localStorage.ps=st;
 		}
