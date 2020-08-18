@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="title">Fat Loss Trainer</title>
+    <style> * {font-size: xx-large; text-align: center;}</style>
+  </head>
+  <body>
+	<div id="msg">
+    <p>
+      The body gets his energy from food, and stores most of it as fat for later use.<br>
+      Exercise uses energy, and also builds muscles which use much more energy even while resting.<br>
+      This site will help you lose fat by doing a simple and short exercise, and slightly changing your nutrition.
+    </p>
+    <p>
+      In order to adjust the workout length, there are two things we need to know:<br>
+      1) Stand with feet together and torso straight but relaxed and measure the widest part of your torso, often around your bellybutton.<br>
+      Last week you circumference was <span id="previousWeight"></span><br>
+	  <label for="weight">What is your circumference today?</label>
+	  <input type="number" step="0.1" id="weight" required><br>
+	  2) Do you look fat?
+	  <button id="yes" onclick="calculateLength(true)">Yes</button><button id="no" onclick="calculateLength(false)">No</button>
+    </p>
+  </div>
+	<button id="stbt" style="display:none" onclick="start()">Start</button>
+	<p id="bar" style="width:0%"></p>
+	<script>
+	var d,pw,st,rt,t,e;
+	
+	window.onload=function(){
+		d=new Date();
+		pw/*Previous Weight*/=localStorage[d.getDay().toString()];
+		document.getElementById("previousWeight").innerHTML=pw;
+	}
+	
+  function calculateLength(isFat) {
+    f=isFat;
+    w=document.getElementById("weight").value;
+    if (w!==""){
+      if (localStorage.wl/*Workout Length*/==undefined) {localStorage.wl=0;}
+      if (pw==undefined){pw=0;}
+      dsps/*Days Since Previous Session*/=Math.round((Date.now()-localStorage.ps/*Previous Session*/)/(1000*60*60*24));
+      if (dsps>1){localStorage.wl-=(dsps-1);}
+      if (localStorage.wl<0){localStorage.wl=0;}
+      if (f && w>=pw) {localStorage.wl++;} else if (!f && pw>=w) {localStorage.wl--;}			
+      localStorage[d.getDay().toString()]=w;
+      if (localStorage.wl>0) {
+        document.getElementById("msg").innerHTML="Today's exercise is to strain all your muscles at once for "+localStorage.wl+" seconds.<br>Using fat for energy takes oxygen (among other things), and muscles need rest to work longer, so rest while you inhale, and strain while you exhale. Both inhaling and exhaling are done through the nose and lasts 3 seconds each.";
+		document.getElementById("stbt").style.display="inline";
+      } else {
+        document.getElementById("msg").innerHTML="You don't need to exercise today.";
+      }	
+    }
+  }
+			
+function start() {
+	document.getElementById("stbt").style.display="none";
+	rt/*Remaining Time*/=Number(localStorage.wl);
+	inhale();
+	t=setInterval(timer,10);	
+}
+
+function inhale(){	
+	document.getElementById("msg").innerHTML="Inhale & relax";
+	document.getElementById("bar").style.background="#4CAF50";
+	st/*Start Time*/=Date.now();
+	setTimeout(exhale,3000);
+}
+
+function exhale(){
+	document.getElementById("msg").innerHTML="Exhale & strain";
+	document.getElementById("bar").style.background="#FF6347";
+	st=Date.now();
+	setTimeout(function(){
+		rt-=3;
+		if (rt>0) {
+			inhale();
+		} else{			
+			clearInterval(t);
+			document.getElementById("msg").innerHTML="Well done, come back tomorrow.<p>Using fat for energy also requires water, so whenever your urine is yellow drink water.<br>It also suppresses apetite, so apart from that you can eat as usual, though unnecessary food will just have to get out by more exercise.</p>"; 
+			document.getElementById("bar").style.display="none";
+			localStorage.ps=st;
+		}
+	},Math.min(rt,3)*1000);
+}
+
+function timer(){	
+	if (document.getElementById("msg").innerHTML.includes("Inhale")) {
+		document.getElementById("bar").style.width=(Date.now()-st)/30+"%";
+		document.getElementById("bar").innerHTML=3-Math.trunc((Date.now()-st)/1000);		
+	} else {		
+		document.getElementById("bar").style.width=100-((Date.now()-st)/Math.min(30,rt*10))+"%";
+		document.getElementById("bar").innerHTML=rt-Math.trunc((Date.now()-st)/1000);
+	}
+}
+	</script>
+	  <script data-goatcounter="https://ayfalgh.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+  </body>
+</html>
