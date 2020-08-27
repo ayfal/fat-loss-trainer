@@ -4,27 +4,19 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="title">Fat Loss Trainer</title>
-    <style> * {font-size: xx-large; text-align: center;}</style>
-  </head>
+    <style> * {font-size: xx-large; text-align:justify}</style>
+  </head>	
   <body>
-	<div id="msg">
-    <p>
-      The body gets his energy from food, and stores most of it as fat for later use.<br>
-      Exercise uses energy, and builds muscles which use even more energy all day long.<br>
-      This site will help you lose fat by doing a simple and short exercise, and slightly changing your nutrition.
-    </p>
-    <p>
-      In order to adjust the workout length, there are two things we need to know:<br>
-      1) The monthly change in your weight (because weight fluctuates):<br>
-      Last month your weight was <span id="previousWeight"></span><br>
+    <div id="msg">
+	  <p><button onclick="intro()">Show intro</button></p>
+      1) Last month your weight was <span id="previousWeight"></span>;<br>
 	  <label for="weight">How much do you weigh today?</label>
-	  <input type="number" step="0.1" id="weight" required><br>
-	  2) Do you look fat? (We can't judge by weight, because of muscle mass)
-	  <button id="yes" onclick="calculateLength(true)">Yes</button><button id="no" onclick="calculateLength(false)">No</button>
-    </p>
-  </div>
-	<button id="stbt" style="display:none" onclick="start()">Start</button>
-	<p id="bar" style="width:0%"></p>
+	  <input type="number" step="0.1" id="weight"><br>
+	  2) Do you look fat?
+	  <button onclick="calculateLength(true)">Yes</button><button onclick="calculateLength(false)">No</button>
+    </div>
+	<p style="text-align:center"><button id="stbt" style="display:none" onclick="start()">Start</button></p>
+	<p id="bar" style="width:0%; text-align:center"></p>
 	<script>
 	var wltd,d,pw,st,rt,t,e;
 	
@@ -33,6 +25,11 @@
 		d=new Date();
 		pw/*Previous Weight*/=wltd[d.getDate()];
 		document.getElementById("previousWeight").innerHTML=pw;
+	}
+	
+	function intro(){
+		document.getElementById("msg").innerHTML="<h1>Introduction</h1><p>The body gets his energy from food, and stores most of it as fat for later use.<br>This site will help you lose fat by doing a simple and short exercise, and drinking some water.</p><h1>Exercise</h1><p>Exercise uses energy, and builds muscles which use even more energy all day long.</p><p>We'll add a second to the exercise each day until you'll start losing weight. When you're done losing fat we'll subtract a second each day, unless you're gaining weight. The data is saved on your device, so use the same one each day.</p>So there are two things we need to know:<br>1) The monthly change in your weight. Last month your weight was "+pw+";<br><label for='weight'>How much do you weigh today?</label><input type='number' step='0.1' id='weight'><br>2) Do you look fat? (We can't judge by weight, because of muscle mass)<button onclick='calculateLength(true)'>Yes</button><button onclick='calculateLength(false)'>No</button>";
+		
 	}
 	
   function calculateLength(isFat) {
@@ -47,7 +44,7 @@
       if (f && w>=pw) {wltd.wl++;} else if (!f && pw>=w) {wltd.wl--;}			
       wltd[d.getDate().toString()]=w;
       if (wltd.wl>0) {
-        document.getElementById("msg").innerHTML="Today's exercise is to strain all your muscles at once for "+wltd.wl+" seconds.<br>Using fat for energy takes oxygen (among other things), and muscles need rest to work longer, so rest while you inhale, and strain while you exhale. Both inhaling and exhaling are done through the nose and lasts 3 seconds each.";
+        document.getElementById("msg").innerHTML="<p>Today's exercise is to strain all your muscles at once for "+wltd.wl+" seconds.</p>Using fat for energy takes oxygen (among other things), and muscles need rest to work longer, so rest while you inhale, and strain while you exhale. Both inhaling and exhaling are done through the nose and lasts 3 seconds each.";
 		document.getElementById("stbt").style.display="inline";
       } else {
         document.getElementById("msg").innerHTML="You don't need to exercise today.";
@@ -57,6 +54,7 @@
 			
 function start() {
 	document.getElementById("stbt").style.display="none";
+	document.getElementById("msg").style.textAlign="center";
 	rt/*Remaining Time*/=Number(wltd.wl);
 	inhale();
 	t=setInterval(timer,10);	
@@ -79,7 +77,8 @@ function exhale(){
 			inhale();
 		} else{			
 			clearInterval(t);
-			document.getElementById("msg").innerHTML="Well done, come back tomorrow.<p>Using fat for energy also requires water, so whenever your urine is yellow drink water, and your appetite will subside.<br>Apart from that you can eat as usual, though unnecessary food will just have to get out by more exercise.</p>"; 
+			document.getElementById("msg").style.textAlign="justify";
+			document.getElementById("msg").innerHTML="<p style='text-align:center'>Well done, come back tomorrow.<br>(For every skipped day we'll subtract a second from the exercise)</p><h1>Water</h1><p>Using fat for energy also requires plenty of water, so whenever your urine is yellow drink water, and your appetite will subside.<br>Apart from that you can eat as usual (but unnecessary food is just counterproductive).</p>"; 
 			document.getElementById("bar").style.display="none";
 			wltd.ps=st;
 			localStorage.wlt=JSON.stringify(wltd);
@@ -97,7 +96,7 @@ function timer(){
 	}
 }
 	</script>
-	  <script data-goatcounter="https://ayfalgh.goatcounter.com/count"
-        async src="//gc.zgo.at/count.js"></script>
+	  <!--<script data-goatcounter="https://ayfalgh.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>-->
   </body>
 </html>
