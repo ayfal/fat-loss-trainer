@@ -8,7 +8,7 @@
   </head>	
   <body>
     <div id="msg">
-	  <p><button onclick="intro()">Show intro</button></p>
+	  <p><button onclick="expln()">Show explanation</button></p>
       1) Last month your weight was <span id="previousWeight"></span>;<br>
 	  <label for="weight">How much do you weigh today?</label>
 	  <input type="number" step="0.1" id="weight"><br>
@@ -27,9 +27,8 @@
 		document.getElementById("previousWeight").innerHTML=pw;
 	}
 	
-	function intro(){
-		document.getElementById("msg").innerHTML="<h1>Introduction</h1><p>The body gets his energy from food, and stores most of it as fat for later use.<br>This site will help you lose fat by doing a simple and short exercise, and drinking some water.</p><h1>Exercise</h1><p>Exercise uses energy, and builds muscles which use even more energy all day long.</p><p>We'll add a second to the exercise each day until you'll start losing weight. When you're done losing fat we'll subtract a second each day, unless you're gaining weight. The data is saved on your device, so use the same one each day.</p>So there are two things we need to know:<br>1) The monthly change in your weight. Last month your weight was "+pw+";<br><label for='weight'>How much do you weigh today?</label><input type='number' step='0.1' id='weight'><br>2) Do you look fat? (We can't judge by weight, because of muscle mass)<button onclick='calculateLength(true)'>Yes</button><button onclick='calculateLength(false)'>No</button>";
-		
+	function expln(){
+		document.getElementById("msg").innerHTML="<h1>Introduction</h1><p>The body gets his energy from food, and stores most of it as fat for later use.<br>This site will help you lose fat by doing a simple and short exercise, and drinking some water.</p><h1>Exercise</h1><p>Exercise uses energy, and builds muscles which use even more energy all day long.</p><p>We'll add a second to the exercise each day until you'll start losing weight. When you're done losing fat we'll subtract a second each day, unless you're gaining weight. The data is stored on your device, so use the same one each day.</p>So there are two things we need to know:<br>1) The monthly change in your weight. Last month your weight was "+pw+";<br><label for='weight'>How much do you weigh today?</label><input type='number' step='0.1' id='weight'><br>2) Do you look fat? (We can't judge by weight, because of muscle mass)<button onclick='calculateLength(true)'>Yes</button><button onclick='calculateLength(false)'>No</button>";		
 	}
 	
   function calculateLength(isFat) {
@@ -41,10 +40,10 @@
       dsps/*Days Since Previous Session*/=Math.round((Date.now()-wltd.ps/*Previous Session*/)/(1000*60*60*24));
       if (dsps>1){wltd.wl-=(dsps-1);}
       if (wltd.wl<0){wltd.wl=0;}
-      if (f && w>=pw) {wltd.wl++;} else if (!f && pw>=w) {wltd.wl--;}			
+      if ((w>pw) || (f && w==pw)){wltd.wl++;} else if (!f && pw>=w) {wltd.wl--;}			
       wltd[d.getDate().toString()]=w;
       if (wltd.wl>0) {
-        document.getElementById("msg").innerHTML="<p>Today's exercise is to strain all your muscles at once for "+wltd.wl+" seconds.</p>Using fat for energy takes oxygen (among other things), and muscles need rest to work longer, so rest while you inhale, and strain while you exhale. Both inhaling and exhaling are done through the nose and lasts 3 seconds each.";
+        document.getElementById("msg").innerHTML="<p>Today's exercise is to strain all your muscles at once for "+wltd.wl+" seconds.</p>Using fat for energy takes oxygen (among other things), and muscles need rest to work longer, so rest while you inhale for 3 seconds, and strain while you exhale for 7 seconds";
 		document.getElementById("stbt").style.display="inline";
       } else {
         document.getElementById("msg").innerHTML="You don't need to exercise today.";
@@ -72,7 +71,7 @@ function exhale(){
 	document.getElementById("bar").style.background="#FF6347";
 	st=Date.now();
 	setTimeout(function(){
-		rt-=3;
+		rt-=7;
 		if (rt>0) {
 			inhale();
 		} else{			
@@ -83,7 +82,7 @@ function exhale(){
 			wltd.ps=st;
 			localStorage.wlt=JSON.stringify(wltd);
 		}
-	},Math.min(rt,3)*1000);
+	},Math.min(rt,7)*1000);
 }
 
 function timer(){	
@@ -91,12 +90,12 @@ function timer(){
 		document.getElementById("bar").style.width=(Date.now()-st)/30+"%";
 		document.getElementById("bar").innerHTML=3-Math.trunc((Date.now()-st)/1000);		
 	} else {		
-		document.getElementById("bar").style.width=100-((Date.now()-st)/Math.min(30,rt*10))+"%";
+		document.getElementById("bar").style.width=100-((Date.now()-st)/Math.min(70,rt*10))+"%";
 		document.getElementById("bar").innerHTML=rt-Math.trunc((Date.now()-st)/1000);
 	}
 }
 	</script>
-	  <script data-goatcounter="https://ayfalgh.goatcounter.com/count"
-        async src="//gc.zgo.at/count.js"></script>
+	  <!--<script data-goatcounter="https://ayfalgh.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>-->
   </body>
 </html>
