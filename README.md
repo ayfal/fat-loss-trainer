@@ -1,4 +1,4 @@
 # Fat Loss Trainer
-Helps lose fat through daily exercise
+Helps lose fat through a simple exercise you do as needed
 
-Better version coming up
+Much Better version coming up
