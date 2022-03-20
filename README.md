@@ -1,4 +1,3 @@
 # Fat Loss Trainer
-Helps losing fat with a simple exercise you only do as needed
-
-Much Better version coming up
+Helps losing fat by doing a very simple exercise during some of the meals
+Coming up
